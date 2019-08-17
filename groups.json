@@ -1,0 +1,22 @@
+{
+  "json": [
+    {
+      "id": "01",
+      "name": "example-group-01",
+      "path": "/example-group-01",
+      "subGroups": []
+    },
+    {
+      "id": "0234",
+      "name": "example-group-02",
+      "path": "/example-group-02",
+      "subGroups": []
+    },
+    {
+      "id": "034567",
+      "name": "example-group-03",
+      "path": "/example-group-03",
+      "subGroups": []
+    }
+  ]
+}

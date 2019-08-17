@@ -1,0 +1,39 @@
+---
+
+- name: debug myGroups
+  debug:
+    var: myGroups
+
+# see https://jinja.palletsprojects.com/en/2.10.x/templates/
+# Difficulty with spaces and lines breaks.
+- name: filtering group_id
+  set_fact:
+    group_id: >
+       "{# Comment : set the request in groupFilter variable #}
+       {% set groupFilter=myGroups | json_query(query) %}
+       {# Comment : check the length of groupFilter variable #}
+       {%- if groupFilter | length == 0 %}
+       {# Comment : affect null to group_id set_fact variable #}
+       undefined
+       {%- else %}
+       {# Comment : Get the first of list and affect it to set_fact variable #}{{ groupFilter | first }}
+       {% endif %}"
+  vars:
+    query: "json[?name=='{{ group_name }}'].id"
+
+- name: debug group_id found
+  debug:
+    var: group_id
+  when: group_id != "undefined"
+
+# Same filtering but with a template....
+- name: Apply template
+  template:
+    src: filtering.j2
+    dest: filtering.json
+  vars:
+    query: "json[?name=='{{ group_name }}'].id"
+
+- name: debug
+  debug:
+    var: lookup('file', 'filtering.json')

@@ -3,44 +3,39 @@
   gather_facts: false
   vars:
     config: "{{ lookup('file', 'config.json') }}"
-  
+    myGroups: "{{ lookup('file', 'groups.json') }}"
+    group_name: example-group-02
+
+
+
   tasks:
-  - name: debug
-    debug:
-      msg: coucou
-      
-  - name: cat config.json
-    shell: cat config.json
-    register: reg_cat 
-    ignore_errors: true
-      
-  - name: debug cat
-    debug:
-      var: reg_cat
 
-  - name: debug config
-    debug:
-      msg: "{{ config | json_query('name') }}"
+    - name: import task filtering
+      include_tasks: filtering.yml
 
-  - name: |
-      "| keep return 
-      lines"
-    command: echo
-
-  - name: >
-      "> do not keep return 
-      lines"
-    command: echo
-
-  - name: |
-      "set_fact fill the variable name dynamically
-      and is available globally after"
-    set_fact:       
-      name: "{{ config | json_query('name') }}"
-      
-  - name: setup fills the dict global ansible_facts
-    setup:       
-      
-  - name: debug set_fact
-    debug:
-      msg: "ansible_facts: {{ ansible_facts }}, name: {{ name }}"
+    - name: debug config
+      debug:
+        msg: "{{ config | json_query('name') }}"
+  
+    - name: |
+        "| keep return 
+        lines"
+      command: echo
+  
+    - name: >
+        "> do not keep return 
+        lines"
+      command: echo
+  
+    - name: |
+        "set_fact fill the variable name dynamically
+        and is available globally after"
+      set_fact:       
+        name: "{{ config | json_query('name') }}"
+        
+#    - name: setup fills the dict global ansible_facts
+#      setup:       
+        
+    - name: debug set_fact
+      debug:
+        msg: "ansible_facts: {{ ansible_facts }}, name: {{ name }}"

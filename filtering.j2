@@ -1,0 +1,9 @@
+#jinja2: strip_block: True, trim_blocks: True
+{# Comment : set the request in groupFilter variable #}
+{% set groupFilter= myGroups | json_query(query) %}
+{%- if groupFilter | length == 0 %}
+undefined
+{%- else %}
+{{ groupFilter | first }}
+{% endif %}
+
